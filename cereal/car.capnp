@@ -192,6 +192,7 @@ struct CarState {
   automaticLaneChange @41 :Bool;
   belowLaneChangeSpeed @42 :Bool;
   accEnabled @43 :Bool;
+  engineRPM @44 :Float32;
 
   # which packets this state came from
   canMonoTimes @12: List(UInt64);
