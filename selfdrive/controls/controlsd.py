@@ -267,7 +267,7 @@ class Controls:
           self.events.add(EventName.noGps)
       if not self.sm.all_alive(['roadCameraState', 'driverCameraState']) and (self.sm.frame > 5 / DT_CTRL):
         self.events.add(EventName.cameraMalfunction)
-      if self.sm['modelV2'].frameDropPerc > 20:
+      if self.sm['modelV2'].frameDropPerc > 30:
         self.events.add(EventName.modeldLagging)
 
       # Check if all manager processes are running
