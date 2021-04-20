@@ -223,8 +223,8 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
 
   'dfButtonAlert': {
     ET.PERMANENT: Alert(
-      "Using profile: ",
-      "",
+      "Follow Distance: ",
+      "Enable Smart Cruise using SET button on the wheel.",
       AlertStatus.normal, AlertSize.mid,
       Priority.LOW, VisualAlert.none, AudibleAlert.chimeWarning1, .4, 0., 1.5),
   },
@@ -280,7 +280,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
   EventName.startup: {
     ET.PERMANENT: Alert(
       "Openpilot initalized",
-      "Press the LKAS or SET button(s) to engage.",
+      "Enable Autosteer using the button right of MAIN.",
       AlertStatus.normal, AlertSize.mid,
       Priority.LOWER, VisualAlert.none, AudibleAlert.none, 0., 0., 5.),
   },
@@ -288,7 +288,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
   EventName.startupMaster: {
     ET.PERMANENT: Alert(
       "Openpilot initalized",
-      "Press the LKAS or SET button(s) to engage.",
+      "Enable Autosteer using the button right of MAIN.",
       AlertStatus.normal, AlertSize.mid,
       Priority.LOWER, VisualAlert.none, AudibleAlert.none, 0., 0., 5.),
   },
