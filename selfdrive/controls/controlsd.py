@@ -60,6 +60,11 @@ class Controls:
     config_realtime_process(3, Priority.CTRL_HIGH)
     self.op_params = opParams()
 
+    self.accel_pressed = False
+    self.decel_pressed = False
+    self.accel_pressed_last = 0.
+    self.decel_pressed_last = 0.
+    
     # Setup sockets
     self.pm = pm
     if self.pm is None:
@@ -362,9 +367,25 @@ class Controls:
 
     self.v_cruise_kph_last = self.v_cruise_kph
 
+    cur_time = self.sm.frame * DT_CTRL
+
+    for b in CS.buttonEvents:
+      if b.pressed:
+        if b.type == car.CarState.ButtonEvent.Type.accelCruise:
+          self.accel_pressed = True
+          self.accel_pressed_last = cur_time
+        elif b.type == car.CarState.ButtonEvent.Type.decelCruise:
+          self.decel_pressed = True
+          self.decel_pressed_last = cur_time
+      else:
+        if b.type == car.CarState.ButtonEvent.Type.accelCruise:
+          self.accel_pressed = False
+        elif b.type == car.CarState.ButtonEvent.Type.decelCruise:
+          self.decel_pressed = False
+
     # if stock cruise is completely disabled, then we can use our own set speed logic
     if not self.CP.enableCruise:
-      self.v_cruise_kph = update_v_cruise(self.v_cruise_kph, CS.buttonEvents, self.enabled)
+      self.v_cruise_kph = update_v_cruise(self.v_cruise_kph, CS.buttonEvents, self.enabled, cur_time, self.accel_pressed,self.decel_pressed,self.accel_pressed_last,self.decel_pressed_last  )
     elif self.CP.enableCruise and CS.cruiseState.enabled:
       self.v_cruise_kph = CS.cruiseState.speed * CV.MS_TO_KPH
 
