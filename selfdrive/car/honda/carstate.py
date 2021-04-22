@@ -335,7 +335,7 @@ class CarState(CarStateBase):
         if self.prev_cruise_buttons == 3: #set
           if self.cruise_buttons != 3:
             self.accEnabled = True
-        if self.prev_cruise_buttons == 4: #resume
+        elif self.prev_cruise_buttons == 4: #resume
           if self.cruise_buttons != 4:
             self.accEnabled = True    
 
