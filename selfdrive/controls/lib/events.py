@@ -224,7 +224,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
   'dfButtonAlert': {
     ET.PERMANENT: Alert(
       "Follow Distance: ",
-      "Enable Smart Cruise using SET button on the wheel.",
+      "",
       AlertStatus.normal, AlertSize.mid,
       Priority.LOW, VisualAlert.none, AudibleAlert.chimeWarning1, .4, 0., 1.5),
   },
