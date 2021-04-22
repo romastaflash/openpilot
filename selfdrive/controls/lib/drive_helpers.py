@@ -4,11 +4,12 @@ from cereal import car
 
 # kph
 V_CRUISE_MAX = 135
-V_CRUISE_MIN = 8
-V_CRUISE_DELTA = 8
+V_CRUISE_MIN = 5
+V_CRUISE_DELTA = 5
 V_CRUISE_ENABLE_MIN = 40
 MPC_N = 16
 CAR_ROTATION_RADIUS = 0.0
+ACC_FAST_MODE = False
 
 class MPC_COST_LAT:
   PATH = 1.0
@@ -31,16 +32,31 @@ def get_steer_max(CP, v_ego):
   return interp(v_ego, CP.steerMaxBP, CP.steerMaxV)
 
 
-def update_v_cruise(v_cruise_kph, buttonEvents, enabled):
-  # handle button presses. TODO: this should be in state_control, but a decelCruise press
-  # would have the effect of both enabling and changing speed is checked after the state transition
-  for b in buttonEvents:
-    if enabled and not b.pressed:
-      if b.type == car.CarState.ButtonEvent.Type.accelCruise:
-        v_cruise_kph += V_CRUISE_DELTA - (v_cruise_kph % V_CRUISE_DELTA)
-      elif b.type == car.CarState.ButtonEvent.Type.decelCruise:
-        v_cruise_kph -= V_CRUISE_DELTA - ((V_CRUISE_DELTA - v_cruise_kph) % V_CRUISE_DELTA)
-      v_cruise_kph = clip(v_cruise_kph, V_CRUISE_MIN, V_CRUISE_MAX)
+def update_v_cruise(v_cruise_kph, buttonEvents, enabled, cur_time, accel_pressed,decel_pressed,accel_pressed_last,decel_pressed_last):
+  
+  if enabled:
+    if (accel_pressed and ((cur_time - accel_pressed_last) >= 1 or (ACC_FAST_MODE and (cur_time - accel_pressed_last) >= 0.5))):
+      ACC_FAST_MODE = True
+      accel_pressed_last = cur_time
+      v_cruise_kph += V_CRUISE_DELTA - (v_cruise_kph % V_CRUISE_DELTA)
+    elif (decel_pressed and ((cur_time - decel_pressed_last) >= 1 or (ACC_FAST_MODE and (cur_time - decel_pressed_last) >= 0.5))):
+      ACC_FAST_MODE = True
+      decel_pressed_last = cur_time
+      v_cruise_kph -= V_CRUISE_DELTA - ((V_CRUISE_DELTA - v_cruise_kph) % V_CRUISE_DELTA)
+    else:
+      for b in buttonEvents:
+        if not b.pressed:
+          if b.type == car.CarState.ButtonEvent.Type.accelCruise:
+            ACC_FAST_MODE = False
+            if (cur_time - accel_pressed_last) < 1:
+              v_cruise_kph += 1
+          elif b.type == car.CarState.ButtonEvent.Type.decelCruise:
+            ACC_FAST_MODE = False
+            if (cur_time - decel_pressed_last) < 1:
+              v_cruise_kph -= 1
+    v_cruise_kph = clip(v_cruise_kph, V_CRUISE_MIN, V_CRUISE_MAX) 
+  else:
+    ACC_FAST_MODE = False 
 
   return v_cruise_kph
 
