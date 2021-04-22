@@ -37,11 +37,9 @@ def update_v_cruise(v_cruise_kph, buttonEvents, enabled, cur_time, accel_pressed
   if enabled:
     if (accel_pressed and ((cur_time - accel_pressed_last) >= 1 or (ACC_FAST_MODE and (cur_time - accel_pressed_last) >= 0.5))):
       ACC_FAST_MODE = True
-      accel_pressed_last = cur_time
       v_cruise_kph += V_CRUISE_DELTA - (v_cruise_kph % V_CRUISE_DELTA)
     elif (decel_pressed and ((cur_time - decel_pressed_last) >= 1 or (ACC_FAST_MODE and (cur_time - decel_pressed_last) >= 0.5))):
       ACC_FAST_MODE = True
-      decel_pressed_last = cur_time
       v_cruise_kph -= V_CRUISE_DELTA - ((V_CRUISE_DELTA - v_cruise_kph) % V_CRUISE_DELTA)
     else:
       for b in buttonEvents:

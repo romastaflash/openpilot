@@ -369,23 +369,27 @@ class Controls:
 
     cur_time = self.sm.frame * DT_CTRL
 
-    for b in CS.buttonEvents:
-      if b.pressed:
-        if b.type == car.CarState.ButtonEvent.Type.accelCruise:
-          self.accel_pressed = True
-          self.accel_pressed_last = cur_time
-        elif b.type == car.CarState.ButtonEvent.Type.decelCruise:
-          self.decel_pressed = True
-          self.decel_pressed_last = cur_time
-      else:
-        if b.type == car.CarState.ButtonEvent.Type.accelCruise:
-          self.accel_pressed = False
-        elif b.type == car.CarState.ButtonEvent.Type.decelCruise:
-          self.decel_pressed = False
+    if self.CP.enableGasInterceptor:
+      for b in CS.buttonEvents:
+        if b.pressed:
+          if b.type == car.CarState.ButtonEvent.Type.accelCruise:
+            self.accel_pressed = True
+            self.accel_pressed_last = cur_time
+          elif b.type == car.CarState.ButtonEvent.Type.decelCruise:
+            self.decel_pressed = True
+            self.decel_pressed_last = cur_time
+        else:
+          if b.type == car.CarState.ButtonEvent.Type.accelCruise:
+            self.accel_pressed = False
+          elif b.type == car.CarState.ButtonEvent.Type.decelCruise:
+            self.decel_pressed = False
 
     # if stock cruise is completely disabled, then we can use our own set speed logic
     if not self.CP.enableCruise:
       self.v_cruise_kph = update_v_cruise(self.v_cruise_kph, CS.buttonEvents, self.enabled, cur_time, self.accel_pressed,self.decel_pressed,self.accel_pressed_last,self.decel_pressed_last  )
+      if self.v_cruise_kph_last != self.v_cruise_kph:
+        self.accel_pressed_last = cur_time
+        self.decel_pressed_last = cur_time
     elif self.CP.enableCruise and CS.cruiseState.enabled:
       self.v_cruise_kph = CS.cruiseState.speed * CV.MS_TO_KPH
 
@@ -447,10 +451,11 @@ class Controls:
           self.current_alert_types.append(ET.ENABLE)
           self.v_cruise_kph = initialize_v_cruise(CS.vEgo, CS.buttonEvents, self.v_cruise_kph_last)
 
-    if self.CP.enableGasInterceptor and CS.cruiseState.enabled and not self.cruiseState_enabled_last:
-      self.v_cruise_kph = initialize_v_cruise(CS.vEgo, CS.buttonEvents, self.v_cruise_kph_last)
+    if self.CP.enableGasInterceptor:
+      if CS.cruiseState.enabled and not self.cruiseState_enabled_last:
+        self.v_cruise_kph = initialize_v_cruise(CS.vEgo, CS.buttonEvents, self.v_cruise_kph_last)
 
-    self.cruiseState_enabled_last = CS.cruiseState.enabled
+      self.cruiseState_enabled_last = CS.cruiseState.enabled
 
     # Check if actuators are enabled
     self.active = self.state == State.enabled or self.state == State.softDisabling
