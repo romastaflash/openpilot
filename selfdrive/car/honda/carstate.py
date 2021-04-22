@@ -334,7 +334,10 @@ class CarState(CarStateBase):
       if self.CP.enableGasInterceptor:
         if self.prev_cruise_buttons == 3: #set
           if self.cruise_buttons != 3:
-            self.accEnabled = True     
+            self.accEnabled = True
+        if self.prev_cruise_buttons == 4: #set
+          if self.cruise_buttons != 4:
+            self.accEnabled = True    
 
       if self.prev_cruise_setting != 1: #1 == not LKAS button
         if self.cruise_setting == 1: #LKAS button rising edge
