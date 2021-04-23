@@ -60,11 +60,6 @@ class Controls:
     config_realtime_process(3, Priority.CTRL_HIGH)
     self.op_params = opParams()
 
-    self.accel_pressed = False
-    self.decel_pressed = False
-    self.accel_pressed_last = 0.
-    self.decel_pressed_last = 0.
-    
     # Setup sockets
     self.pm = pm
     if self.pm is None:
@@ -367,6 +362,7 @@ class Controls:
 
     self.v_cruise_kph_last = self.v_cruise_kph
 
+<<<<<<< HEAD
     cur_time = self.sm.frame * DT_CTRL
 
     if self.CP.enableGasInterceptor:
@@ -390,6 +386,11 @@ class Controls:
       if self.v_cruise_kph_last != self.v_cruise_kph:
         self.accel_pressed_last = cur_time
         self.decel_pressed_last = cur_time
+=======
+    # if stock cruise is completely disabled, then we can use our own set speed logic
+    if not self.CP.enableCruise:
+      self.v_cruise_kph = update_v_cruise(self.v_cruise_kph, CS.buttonEvents, self.enabled)
+>>>>>>> parent of 1ebcbeb44 (test build)
     elif self.CP.enableCruise and CS.cruiseState.enabled:
       self.v_cruise_kph = CS.cruiseState.speed * CV.MS_TO_KPH
 
