@@ -326,7 +326,7 @@ class CarState(CarStateBase):
     ret.cruiseState.nonAdaptive = self.cruise_mode != 0
 
     # Gets rid of Pedal Grinding noise when brake is pressed at slow speeds for some models
-    if self.CP.carFingerprint in (CAR.PILOT, CAR.PILOT_2019, CAR.RIDGELINE):
+    if self.CP.carFingerprint in (CAR.PILOT, CAR.CIVIC, CAR.PILOT_2019, CAR.RIDGELINE):
       if ret.brake > 0.05:
         ret.brakePressed = True
 
