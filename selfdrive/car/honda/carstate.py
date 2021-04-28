@@ -234,6 +234,14 @@ class CarState(CarStateBase):
     
     self.belowLaneChangeSpeed = ret.vEgo < (45 * CV.MPH_TO_MS)
 
+    steer_status = self.steer_status_values[cp.vl["STEER_STATUS"]['STEER_STATUS']]
+    ret.steerError = steer_status not in ['NORMAL', 'NO_TORQUE_ALERT_1', 'NO_TORQUE_ALERT_2', 'LOW_SPEED_LOCKOUT', 'TMP_FAULT']
+    # NO_TORQUE_ALERT_2 can be caused by bump OR steering nudge from driver
+    self.steer_not_allowed = steer_status not in ['NORMAL', 'NO_TORQUE_ALERT_2']
+    # LOW_SPEED_LOCKOUT is not worth a warning
+    if (self.automaticLaneChange and not self.belowLaneChangeSpeed) or not (self.rightBlinkerOn or self.leftBlinkerOn):
+      ret.steerWarning = steer_status not in ['NORMAL', 'LOW_SPEED_LOCKOUT', 'NO_TORQUE_ALERT_2']
+
     ret.steeringAngleDeg = cp.vl["STEERING_SENSORS"]['STEER_ANGLE']
     ret.steeringRateDeg = cp.vl["STEERING_SENSORS"]['STEER_ANGLE_RATE']
 
@@ -345,18 +353,6 @@ class CarState(CarStateBase):
       if ret.brakePressed:
         self.accEnabled = False
       ret.cruiseState.enabled = self.accEnabled
-
-    ret.steerError = False
-    ret.steerWarning = False
-
-    if self.lkasEnabled:
-      steer_status = self.steer_status_values[cp.vl["STEER_STATUS"]['STEER_STATUS']]
-      ret.steerError = steer_status not in ['NORMAL', 'NO_TORQUE_ALERT_1', 'NO_TORQUE_ALERT_2', 'LOW_SPEED_LOCKOUT', 'TMP_FAULT']
-      # NO_TORQUE_ALERT_2 can be caused by bump OR steering nudge from driver
-      self.steer_not_allowed = steer_status not in ['NORMAL', 'NO_TORQUE_ALERT_2']
-      # LOW_SPEED_LOCKOUT is not worth a warning
-      if (self.automaticLaneChange and not self.belowLaneChangeSpeed and (self.rightBlinkerOn or self.leftBlinkerOn)) or not (self.rightBlinkerOn or self.leftBlinkerOn):
-        ret.steerWarning = steer_status not in ['NORMAL', 'LOW_SPEED_LOCKOUT', 'NO_TORQUE_ALERT_2']
 
     # TODO: discover the CAN msg that has the imperial unit bit for all other cars
     self.is_metric = not cp.vl["HUD_SETTING"]['IMPERIAL_UNIT'] if self.CP.carFingerprint in (CAR.CIVIC) else False
