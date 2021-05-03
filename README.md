@@ -1,4 +1,4 @@
-# Stock Additions v0.6.6 (0.8.2)
+# Stock Additions [Update 3](/SA_RELEASES.md) (0.8.2)
 
 Stock Additions is a fork of openpilot designed to be minimal in design while boasting various feature additions and behavior improvements over stock. I have a 2017 Toyota Corolla with comma pedal, so most of my changes are designed to improve the longitudinal performance.
 
@@ -19,6 +19,7 @@ Want to request a feature or create a bug report? [Open an issue here!](https://
 * [**Adding derivative to PI for better control**](#pi---pid-controller-for-long-and-lat) - lat: smoother control in turns; long: fix for comma pedal overshoot
 
 ### General Features
+* [**NEW❗ Smoother long control using delay**](#new-compensate-for-longitudinal-delay-for-earlier-braking) - using an accel delay, just like for lateral
 * [**Customize this fork**](#Customize-this-fork-opEdit) - easily edit fork parameters with support for live tuning
 * [**Automatic updates**](#Automatic-updates)
 * [**ZSS Support**](#ZSS-support) - takes advantage of your high-precision Zorrobyte Steering Sensor
@@ -111,10 +112,12 @@ If you have a car without a pedal, or you do have one but I haven't created a pr
   Long derivative is disabled by default due to only one tune for all cars, but can be enabled by using [opEdit](#Customize-this-fork-opEdit) and setting the `enable_long_derivative` parameter to `True`. It works well on my '17 Corolla with pedal.
 
 ---
-### ZSS Support
-If you have a Prius with a ZSS ([Zorrobyte](https://github.com/zorrobyte) Steer Sensor), you can use this fork to take full advantage of your high-precision angle sensor! Added support for ZSS with [PR #198](https://github.com/ShaneSmiskol/openpilot/pull/198), there's nothing you need to do. Special thanks to [Trae](https://github.com/d412k5t412) for helping testing the addition!
+## General Features
 
-If you have a ZSS but not a Prius, let me know and I can add support for your car.
+### NEW❗ Compensate for longitudinal delay for earlier braking
+This just simply uses desired future acceleration for feedforward rather than current desired acceleration. openpilot already compensates for steering delay, but not longitudinal. This adds that, replacing the previous ***experimental*** feature called eager accel which tried to fix the same issues; jerky and late braking. Now we more correctly compensate for delay.
+
+By default, we assume a 0.4 second delay from sending acceleration to seeing it realized, which is tunable with the opEdit param `long_accel_delay`. Raise if braking too late, lower if braking too early. Stock openpilot is 0.0 (no delay).
 
 ---
 ### Customize this fork (opEdit)
