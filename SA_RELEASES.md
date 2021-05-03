@@ -1,4 +1,24 @@
-Stock Additions v0.6.6 - 2020-02-27 (0.8.2)
+Stock Additions Update 3 - 2021-05-03 (0.8.2)
+===
+ * Remove eager accel and instead send future desired accel
+   * Much simpler and better/smoother results (tunable with `long_accel_delay`)
+
+Stock Additions Update 2 - 2021-04-21 (0.8.2)
+===
+ * Update versioning sceme to *Updates*, which reset on each new openpilot version
+ * For pedal users: convert acceleration to correct gas percentage for smooth gas control (dynamic gas isn't needed anymore!)
+ * Offroad apk with color correction option from ihsakashi
+ * opParams and opEdit: Make more params live! Any param not marked `static` can be adjusted while onroad! The non-static non-live params update within 10 seconds.
+ * New param to change at which speed lane changes become nudgeless above (`alca_no_nudge_speed`)
+ * Experimental feature: eager acceleration (read the README under general features)
+ * More accurate LDW warning
+ * Features ported from 0.8.3:
+   * The newest KL model, and a param to enable laneless
+   * (0.8.4) The laneless MPC retune fix from Harald
+   * A few car firmware updates
+   * GPS malfunction fix
+
+Stock Additions v0.6.6 - 2021-02-27 (0.8.2)
 ===
  * Continued grey panda support (white panda not guaranteed)
  * Temporary removal of LaneSpeed and DynamicCameraOffset features
@@ -9,6 +29,7 @@ Stock Additions v0.6.6 - 2020-02-27 (0.8.2)
  * Add color corrections button, PR by ihsakashi
  * More parameters now update while driving.
    * If the param isn't marked with "static" you no longer have to reboot
+ * Parameter `alca_no_nudge_speed` controls the speed at which lane changes go from needing a nudge to "nudgeless"
 
 Stock Additions v0.6.5 - 2020-12-07 (0.8)
 ===
