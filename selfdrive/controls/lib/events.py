@@ -510,18 +510,18 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
 
   EventName.laneChange: {
     ET.WARNING: Alert(
-      "Changing Lane",
-      "Monitor Other Vehicles",
+      "Automatically Changing Lane",
+      "Check your surroundings.",
       AlertStatus.normal, AlertSize.mid,
       Priority.LOW, VisualAlert.none, AudibleAlert.none, .0, .1, .1),
   },
 
   EventName.manualSteeringRequired: {
-    ET.PERMANENT: Alert(
+    ET.WARNING: Alert(
       "ACC Mode",
       "LKAS switched off. Steering required.",
       AlertStatus.normal, AlertSize.mid,
-      Priority.LOW, VisualAlert.none, AudibleAlert.none, 1., 2., 2.),
+      Priority.LOW, VisualAlert.none, AudibleAlert.none, .0, .1, .1),
   },
 
   EventName.manualLongitudinalRequired: {
@@ -537,7 +537,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
       "LKAS motor torque maxed out",
       "You may need to assist the wheel.",
       AlertStatus.normal, AlertSize.mid,
-      Priority.LOW, VisualAlert.none, AudibleAlert.none, 1., 1., 1.),
+      Priority.LOW, VisualAlert.none, AudibleAlert.chimeWarning1, 1., 1., 1.),
   },
 
   EventName.fanMalfunction: {
