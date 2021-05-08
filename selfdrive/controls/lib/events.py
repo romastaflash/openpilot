@@ -486,16 +486,16 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
 
   EventName.preLaneChangeLeft: {
     ET.WARNING: Alert(
-      "Left Automatic Lane Change",
-      "Nudge the wheel to the left to begin.",
+      "Left Lane Change Below 45MPH",
+      "Autosteer suspended until signals are off.",
       AlertStatus.normal, AlertSize.mid,
       Priority.LOW, VisualAlert.none, AudibleAlert.none, .0, .1, .1, alert_rate=0.75),
   },
 
   EventName.preLaneChangeRight: {
     ET.WARNING: Alert(
-      "Right Automatic Lane Change",
-      "Nudge the wheel to the right to begin.",
+      "Right Lane Change Below 45MPH",
+      "Autosteer suspended until signals are off.",
       AlertStatus.normal, AlertSize.mid,
       Priority.LOW, VisualAlert.none, AudibleAlert.none, .0, .1, .1, alert_rate=0.75),
   },
@@ -510,7 +510,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
 
   EventName.laneChange: {
     ET.WARNING: Alert(
-      "Automatically Changing Lane",
+      "Changing Lane",
       "Check your surroundings.",
       AlertStatus.normal, AlertSize.mid,
       Priority.LOW, VisualAlert.none, AudibleAlert.none, .0, .1, .1),
@@ -521,7 +521,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
       "ACC Mode",
       "LKAS switched off. Steering required.",
       AlertStatus.normal, AlertSize.mid,
-      Priority.LOW, VisualAlert.none, AudibleAlert.none, .0, .1, .1),
+      Priority.LOW, VisualAlert.none, AudibleAlert.none, 28800., .1, .1),
   },
 
   EventName.manualLongitudinalRequired: {
@@ -529,7 +529,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
       "LKAS Mode",
       "ACC switched off. Accel/brake required.",
       AlertStatus.normal, AlertSize.mid,
-      Priority.LOW, VisualAlert.none, AudibleAlert.none, 1., 2., 2.),
+      Priority.LOW, VisualAlert.none, AudibleAlert.none, 5., 2., 2.),
   },
 
   EventName.steerSaturated: {
