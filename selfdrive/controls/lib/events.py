@@ -521,7 +521,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
       "ACC Mode",
       "LKAS switched off. Steering required.",
       AlertStatus.normal, AlertSize.mid,
-      Priority.LOW, VisualAlert.none, AudibleAlert.none, 28800., .1, .1),
+      Priority.LOW, VisualAlert.none, AudibleAlert.none, 1., .1, .1),
   },
 
   EventName.manualLongitudinalRequired: {
@@ -529,7 +529,7 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
       "LKAS Mode",
       "ACC switched off. Accel/brake required.",
       AlertStatus.normal, AlertSize.mid,
-      Priority.LOW, VisualAlert.none, AudibleAlert.none, 5., 2., 2.),
+      Priority.LOW, VisualAlert.none, AudibleAlert.none, 1., 2., 2.),
   },
 
   EventName.steerSaturated: {
