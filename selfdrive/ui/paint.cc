@@ -387,11 +387,11 @@ static void ui_draw_df_button(UIState *s) {
 
   nvgFillColor(s->vg, nvgRGBA(255, 255, 255, 255));
   nvgFontSize(s->vg, 80);
-  nvgText(s->vg, btn_x - 38, btn_y + 30, "DF", NULL);
+  nvgText(s->vg, btn_x - 38, btn_y + 30, "GAP", NULL);
 
   nvgFillColor(s->vg, nvgRGBA(255, 255, 255, 255));
   nvgFontSize(s->vg, 45);
-  nvgText(s->vg, btn_x - 34, btn_y + 50 + 15, "profile", NULL);
+  nvgText(s->vg, btn_x - 34, btn_y + 50 + 15, "Adjust", NULL);
 }
 
 static void ui_draw_ml_button(UIState *s) {
