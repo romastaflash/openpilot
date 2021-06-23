@@ -625,11 +625,11 @@ EVENTS: Dict[int, Dict[str, Union[Alert, Callable[[Any, messaging.SubMaster, boo
 
   EventName.steerTempUnavailable: {
     ET.WARNING: Alert(
-      "Autosteer limit reached",
-      "",
-      AlertStatus.normal, AlertSize.small,
+      "Autosteer Temporarily Suspended",
+      "Steering override by driver.",
+      AlertStatus.normal, AlertSize.mid,
       Priority.LOW, VisualAlert.none, AudibleAlert.none, .4, 2., 1.),
-    ET.NO_ENTRY: NoEntryAlert("Steering Temporarily Unavailable",
+    ET.NO_ENTRY: NoEntryAlert("Autosteer Temporarily Suspended",
                               duration_hud_alert=0.),
   },
 
